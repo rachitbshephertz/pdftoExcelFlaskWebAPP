@@ -1,5 +1,4 @@
 import os
-os.environ["SPARK_HOME"] = r"E:\Downloads\spark-3.0.0-preview2-bin-hadoop3.2\spark-3.0.0-preview2-bin-hadoop3.2"
 
 import findspark
 findspark.init()
