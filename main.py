@@ -61,7 +61,7 @@ def upload_image():
                     print(converted_file)
                     root_dir = os.path.dirname(os.getcwd())
                     print(root_dir)
-                    return send_from_directory(os.path.join(root_dir, 'uploads'), converted_file, as_attachment=True)
+                    return send_from_directory(os.path.join(root_dir, 'pdftoExcelFlaskWebAPP', 'uploads'), converted_file, as_attachment=True)
 
                 else:
                     print("That file extension is not allowed")
