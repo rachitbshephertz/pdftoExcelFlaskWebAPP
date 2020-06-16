@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 
-app.config["IMAGE_UPLOADS"] = r"/app/uploads"
+app.config["IMAGE_UPLOADS"] = r"/pdftoExcelFlaskWebAPP/uploads"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["PDF"]
 app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
