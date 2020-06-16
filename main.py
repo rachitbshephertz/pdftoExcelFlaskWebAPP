@@ -56,10 +56,12 @@ def upload_image():
 
                     image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     print("Image saved")
-
+            
                     converted_file = converter.pdf_to_csv(os.path.join(app.config["IMAGE_UPLOADS"], filename), password, (filename).split(".")[0], app.config["IMAGE_UPLOADS"])
                     print(converted_file)
-                    return send_from_directory(app.config["IMAGE_UPLOADS"], converted_file, as_attachment=True)
+                    root_dir = os.path.dirname(os.getcwd())
+                    print(root_dir)
+                    return send_from_directory(os.path.join(root_dir, 'uploads'), converted_file, as_attachment=True)
 
                 else:
                     print("That file extension is not allowed")
