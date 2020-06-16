@@ -58,9 +58,6 @@ def upload_image():
                     print("Image saved")
             
                     converted_file = converter.pdf_to_csv(os.path.join(app.config["IMAGE_UPLOADS"], filename), password, (filename).split(".")[0], app.config["IMAGE_UPLOADS"])
-                    print(converted_file)
-                    root_dir = os.path.dirname(os.getcwd())
-                    print(os.path.join(root_dir, 'pdftoExcelFlaskWebAPP', 'uploads'))
                     return send_from_directory('uploads', converted_file, as_attachment=True)
 
                 else:
