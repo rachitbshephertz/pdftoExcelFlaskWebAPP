@@ -44,7 +44,6 @@ def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
         finaldf.append(df)
 
     finaldf = pd.concat(finaldf)
-
     # datapreparationsteps
 
     finaldf1 = finaldf.drop(finaldf.columns[7], axis=1).rename(columns=finaldf.iloc[0]).drop(finaldf.index[0])
@@ -72,5 +71,5 @@ def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
     # ifwecanmakethefiledeleteondownloadcompletion
 
     finaldf4.toPandas().to_csv(os.path.join(upload_folder_path, file_name + ".csv"), header=True, index=False)
-
+    print("completed")
     return file_name + ".csv"
