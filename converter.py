@@ -1,4 +1,5 @@
 import os
+os.environ["JAVA_HOME"] = "/home/rachit_bedi1/jdk1.8.0_251"
 
 import findspark
 findspark.init()
