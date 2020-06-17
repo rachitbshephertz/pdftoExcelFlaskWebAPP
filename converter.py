@@ -1,8 +1,8 @@
 import os
-os.environ["JAVA_HOME"] = "/home/rachit_bedi1/jdk1.8.0_251"
-
+Print("111111111")
 import findspark
 findspark.init()
+Print("222222222")
 
 import pandas as pd
 import tabula
@@ -13,6 +13,7 @@ from pyspark.sql.functions import unix_timestamp, from_unixtime
 
 
 spark = SparkSession.builder.master("local[*]").getOrCreate()
+Print("33333333333")
 
 
 def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
