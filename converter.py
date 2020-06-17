@@ -12,11 +12,12 @@ from pyspark.sql.functions import col
 from pyspark.sql.functions import unix_timestamp, from_unixtime
 
 
-spark = SparkSession.builder.master("local[*]").getOrCreate()
 print("33333333333")
 
 
 def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
+    spark = SparkSession.builder.master("local[*]").getOrCreate()
+
     # readingthepdfbody
     dfs = tabula.read_pdf(pdf_path, password=password, pages="all", lattice=True, multiple_tables=True,
                           pandas_options={'header': None}, )
@@ -74,4 +75,5 @@ def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
 
     finaldf4.toPandas().to_csv(os.path.join(upload_folder_path, file_name + ".csv"), header=True, index=False)
     print("completed")
+    SparkContext().stop()
     return file_name + ".csv"
