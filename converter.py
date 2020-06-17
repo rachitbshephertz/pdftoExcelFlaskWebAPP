@@ -1,23 +1,10 @@
-import os
-print("111111111")
-import findspark
-findspark.init()
-print("222222222")
-
+import numpy as np
 import pandas as pd
 import tabula
-from pyspark.sql import SparkSession
-from pyspark.sql import functions as F
-from pyspark.sql.functions import col
-from pyspark.sql.functions import unix_timestamp, from_unixtime
-
-
-print("33333333333")
+import os
 
 
 def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
-    spark = SparkSession.builder.master("local[*]").getOrCreate()
-
     # readingthepdfbody
     dfs = tabula.read_pdf(pdf_path, password=password, pages="all", lattice=True, multiple_tables=True,
                           pandas_options={'header': None}, )
@@ -47,33 +34,23 @@ def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
         finaldf.append(df)
 
     finaldf = pd.concat(finaldf)
-    # datapreparationsteps
 
+    # datapreparationsteps
     finaldf1 = finaldf.drop(finaldf.columns[7], axis=1).rename(columns=finaldf.iloc[0]).drop(finaldf.index[0])
     finaldf1 = finaldf1.rename(columns=dict(zip(finaldf1.columns, list1)))
 
-    # Thislineofcodecreatesasparkdataframesfrompandas
-    finaldf2 = spark.createDataFrame(finaldf1.astype(str))
-    # Thislineofcodecreatescolumnsbasedonsomewhenconditions
-    # Additionally itsassignssomecolumnsbaseonsomequerydefineabove
-    finaldf3 = finaldf2.withColumn('Amount', F.when((F.col("Withdrawn") == 'nan'), col("Paid_in")).otherwise(
-        col("Withdrawn"))).withColumn('Direction', F.when((F.col("Withdrawn") == 'nan'), "Paid_in")
-                                      .otherwise("Withdrawn")).withColumn('Customer_Name', F.lit(Name)).withColumn(
-        'Mobile',
-        F.lit(
-            Mobile)).withColumn(
-        'Email', F.lit(Email))
+    pandadf1 = finaldf1
 
-    # Thislineselectsthefieldstobexported
-    finaldf4 = finaldf3.select('Transaction_Id', 'Customer_Name',
-                               from_unixtime(unix_timestamp(finaldf3.Date_time, 'yyyy-MM-dd HH:mm:ss')).alias(
-                                   'date_parse'),
-                               'Details', 'Status', 'Amount', 'Balance', 'Direction', 'Mobile', 'Email')
+    pandadf1["Amount"] = pandadf1['Withdrawn']
+    pandadf1["Amount"] = pandadf1['Amount'].fillna(pandadf1['Withdrawn'].fillna(pandadf1['Paid_in']))
+    pandadf1['Direction'] = np.where(pandadf1['Paid_in'].notnull(), 'Paid_in', 'Withdrawn')
+    pandadf1["Customer_Name"] = Name
+    pandadf1["Mobile"] = Mobile
+    pandadf1["Email"] = Email
+    pandadf1["date_parse"] = pandadf1["Date_time"]
 
-    # theexportpartwillbereplacedbydownload
-    # ifwecanmakethefiledeleteondownloadcompletion
+    pandadf1 = pandadf1[['Transaction_Id', 'Customer_Name', 'date_parse', 'Details', 'Status', 'Amount', 'Balance', 'Direction', 'Mobile', 'Email']]
 
-    finaldf4.toPandas().to_csv(os.path.join(upload_folder_path, file_name + ".csv"), header=True, index=False)
-    print("completed")
-    spark.stop()
+    pandadf1.to_csv(os.path.join(upload_folder_path, file_name + ".csv"), header=True, index=False)
+
     return file_name + ".csv"
