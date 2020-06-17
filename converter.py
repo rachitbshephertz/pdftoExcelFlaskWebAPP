@@ -3,6 +3,7 @@ import pandas as pd
 import tabula
 import os
 
+os.environ["JAVA_HOME"] = "/usr/lib/jdk/jdk1.8.0_251"
 
 def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
     # readingthepdfbody
