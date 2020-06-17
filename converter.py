@@ -1,7 +1,7 @@
 import os
 print("111111111")
 import findspark
-findspark.init()
+# findspark.init()
 print("222222222")
 
 import pandas as pd
