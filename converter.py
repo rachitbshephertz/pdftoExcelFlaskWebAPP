@@ -75,5 +75,5 @@ def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
 
     finaldf4.toPandas().to_csv(os.path.join(upload_folder_path, file_name + ".csv"), header=True, index=False)
     print("completed")
-    SparkContext().stop()
+    spark.stop()
     return file_name + ".csv"
