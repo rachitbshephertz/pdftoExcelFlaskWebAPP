@@ -76,7 +76,7 @@ def upload_image():
                     converted_file = converter.pdf_to_csv(os.path.join(app.config["IMAGE_UPLOADS"], filename), password, (filename).split(".")[0], app.config["IMAGE_UPLOADS"])
                     
                     delete_generated_file(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                    async_delete_generated_file(os.path.join(app.config["IMAGE_UPLOADS"], converted_file))
+#                     async_delete_generated_file(os.path.join(app.config["IMAGE_UPLOADS"], converted_file))
                     
                     return send_from_directory('uploads', converted_file, as_attachment=True)
 
