@@ -40,6 +40,7 @@ def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
     finaldf1 = finaldf1.rename(columns=dict(zip(finaldf1.columns, list1)))
 
     pandadf1 = finaldf1
+    pandadf1.to_csv(os.path.join(upload_folder_path, "def" + ".csv"), header=True, index=False)
 
     pandadf1["Amount"] = pandadf1['Withdrawn']
     pandadf1["Amount"] = pandadf1['Amount'].fillna(pandadf1['Withdrawn'].fillna(pandadf1['Paid_in']))
