@@ -3,7 +3,6 @@ import pandas as pd
 import tabula
 import os
 
-os.environ["JAVA_HOME"] = "/usr/lib/jdk/jdk1.8.0_251"
 
 def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
     # readingthepdfbody
@@ -53,4 +52,5 @@ def pdf_to_csv(pdf_path, password, file_name, upload_folder_path):
     pandadf1 = pandadf1[['Transaction_Id', 'Customer_Name', 'date_parse', 'Details', 'Status', 'Amount', 'Balance', 'Direction', 'Mobile', 'Email']]
 
     pandadf1.to_csv(os.path.join(upload_folder_path, file_name + ".csv"), header=True, index=False)
+
     return file_name + ".csv"
