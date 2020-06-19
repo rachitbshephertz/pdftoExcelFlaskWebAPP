@@ -2,6 +2,8 @@ from flask import Flask, request, redirect, render_template, send_from_directory
 from werkzeug.utils import secure_filename
 import converter
 import os
+import threading
+import time
 
 app = Flask(__name__)
 print(app.root_path)
@@ -10,6 +12,20 @@ app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["PDF"]
 app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
 
+
+def delete_generated_file(file_path):
+    if os.path.exists(file_path):
+        time.sleep(4)
+        os.remove(file_path)
+    else:
+        print("No file found")
+
+
+def async_delete_generated_file(file_path):
+    thread = threading.Thread(target=delete_generated_file, args=(file_path,))
+    thread.start()
+    
+    
 def allowed_image(filename):
 
     if not "." in filename:
@@ -58,6 +74,10 @@ def upload_image():
                     print("Image saved")
             
                     converted_file = converter.pdf_to_csv(os.path.join(app.config["IMAGE_UPLOADS"], filename), password, (filename).split(".")[0], app.config["IMAGE_UPLOADS"])
+                    
+                    delete_generated_file(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    async_delete_generated_file(os.path.join(app.config["IMAGE_UPLOADS"], converted_file))
+                    
                     return send_from_directory('uploads', converted_file, as_attachment=True)
 
                 else:
