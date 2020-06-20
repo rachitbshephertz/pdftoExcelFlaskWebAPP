@@ -333,15 +333,10 @@
 					processData: false,
 					data: formData,
 					success: function(response, status, request){
-						console.log(status);
-						console.log('form submitted.');
 						jQuery(".loader-div").addClass("d-none")
 						jQuery(".loader-div").removeClass("loader-background");
-						var blob=new Blob([response]);
-						var link=document.createElement('a');
-						link.href=window.URL.createObjectURL(blob);
-						link.download= "MPESA_Statement.xlsx";
-						link.click();
+						var path = response.fileUrl
+						location.href = path
 						location.reload(true)
 					},
 					error: function(){
