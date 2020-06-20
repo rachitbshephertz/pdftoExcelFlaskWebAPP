@@ -333,9 +333,11 @@
 					processData: false,
 					data: formData,
 					success: function(response, status, request){
+						console.log(response)
 						jQuery(".loader-div").addClass("d-none")
 						jQuery(".loader-div").removeClass("loader-background");
 						var path = response.fileUrl
+						console.log("http://" +  window.location.host + path)
 						location.href = "http://" +  window.location.host + path
 						location.reload(true)
 					},
