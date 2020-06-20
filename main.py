@@ -77,9 +77,11 @@ def upload_image():
                     
                     delete_generated_file(os.path.join(app.config["IMAGE_UPLOADS"], filename))
 #                     async_delete_generated_file(os.path.join(app.config["IMAGE_UPLOADS"], converted_file))
-                    
-                    return send_from_directory('uploads', converted_file, as_attachment=True)
 
+                    response = dict()
+                    response["success"] = True
+                    response["fileUrl"] = "/static/" + str(converted_file)
+                    return jsonify(response), 200
                 else:
                     print("That file extension is not allowed")
                     return redirect(request.url)
