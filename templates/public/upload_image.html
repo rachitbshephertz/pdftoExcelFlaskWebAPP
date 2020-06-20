@@ -336,7 +336,7 @@
 						jQuery(".loader-div").addClass("d-none")
 						jQuery(".loader-div").removeClass("loader-background");
 						var path = response.fileUrl
-						location.href = path
+						location.href = "http://" +  window.location.host + path
 						location.reload(true)
 					},
 					error: function(){
